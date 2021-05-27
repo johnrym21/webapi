@@ -1,0 +1,23 @@
+{
+  "name": "webapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "John-Rym AOun",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "convert-string": "^0.1.0",
+    "express": "^4.17.1",
+    "https": "^1.0.0",
+    "msnodesqlv8": "^2.0.11",
+    "mssql": "^6.3.1",
+    "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.7",
+    "oledb": "^1.6.0",
+    "request": "^2.88.2"
+  }
+}
