@@ -3,10 +3,9 @@ const axios = require('axios');
 const url = 'http://192.168.10.14/FlexiCapture12/Server/API/v1/Json'
 
 //steps to ocr an image
-
 async function OpenSession(){
     try{
-        const resp = await axios.post(url,
+        const response = await axios.post(url,
             {
                 "MethodName":"OpenSession",
                 "Params": {
@@ -18,12 +17,7 @@ async function OpenSession(){
               'Authorization' : 'Basic ' + 'ZmlkZWxpdHlob1xhYmJ5eWFwaXVzcjpAYmIxMTVSdg==',
               'Content-Type' : 'application/json' }
             })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            return response.data;
         }
     catch (err){
         console.log(err);
@@ -56,7 +50,7 @@ async function GetProjects(){
 
 async function AddNewBatch(SessionId, BatchName){
     try{
-        const resp = await axios.post(url,
+        const response = await axios.post(url,
             {
                 "MethodName":"AddNewBatch",
                 "Params": {
@@ -96,12 +90,7 @@ async function AddNewBatch(SessionId, BatchName){
               'Authorization' : 'Basic ' + 'ZmlkZWxpdHlob1xhYmJ5eWFwaXVzcjpAYmIxMTVSdg==',
               'Content-Type' : 'application/json' }
             })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            return response.data;
         }
     catch (err){
         console.log(err);
@@ -110,7 +99,7 @@ async function AddNewBatch(SessionId, BatchName){
 
 async function OpenBatch(SessionId, BatchId){
     try{
-        const resp = await axios.post(url,
+        const response = await axios.post(url,
             {
                 "MethodName":"OpenBatch",
                 "Params": {
@@ -122,12 +111,7 @@ async function OpenBatch(SessionId, BatchId){
               'Authorization' : 'Basic ' + 'ZmlkZWxpdHlob1xhYmJ5eWFwaXVzcjpAYmIxMTVSdg==',
               'Content-Type' : 'application/json' }
             })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            return response.data;
         }
     catch (err){
         console.log(err);
@@ -166,7 +150,7 @@ async function AddNewImage(){
 
 async function ProcessBatch(SessionId, BatchId){
     try{
-        const resp = await axios.post(url,
+        const response = await axios.post(url,
             {
                 "MethodName":"ProcessBatch",
                 "Params": {
@@ -178,12 +162,7 @@ async function ProcessBatch(SessionId, BatchId){
               'Authorization' : 'Basic ' + 'ZmlkZWxpdHlob1xhYmJ5eWFwaXVzcjpAYmIxMTVSdg==',
               'Content-Type' : 'application/json' }
             })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            return response.data;
         }
     catch (err){
         console.log(err);
@@ -218,7 +197,7 @@ async function GetDocuments(){
 
 async function LoadDocumentResult(){
     try{
-        const resp = await axios.post(url,
+        const response = await axios.post(url,
             {
                 "MethodName":"LoadDocumentResult",
                 "Params": {
@@ -232,12 +211,7 @@ async function LoadDocumentResult(){
               'Authorization' : 'Basic ' + 'ZmlkZWxpdHlob1xhYmJ5eWFwaXVzcjpAYmIxMTVSdg==',
               'Content-Type' : 'application/json' }
             })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            return response.data;
         }
     catch (err){
         console.log(err);
@@ -272,7 +246,7 @@ async function CloseBatch(){
 
 async function AddNewDocument(SessionId, BatchId, FileName, Bytes){
     try{
-        const resp = await axios.post(url,
+        const response = await axios.post(url,
             {
                 "MethodName":"AddNewDocument",
                 "Params": {
@@ -319,12 +293,7 @@ async function AddNewDocument(SessionId, BatchId, FileName, Bytes){
               'Authorization' : 'Basic ' + 'ZmlkZWxpdHlob1xhYmJ5eWFwaXVzcjpAYmIxMTVSdg==',
               'Content-Type' : 'application/json' }
             })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            return response.data;
         }
     catch (err){
         console.log(err);

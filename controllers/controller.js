@@ -26,41 +26,72 @@ module.exports = function (app) {
                         console.log(result)
                         res.end(result)
                     } else {
-                        abbyycalls.OpenSession().then(result => {
-                            const SessionId = result;
-                            abbyycalls.AddNewBatch(SessionId, BatchName).then(result => {
-                                const BatchId = result;
-                                abbyycalls.OpenBatch(SessionId, BatchId)
-                                abbyycalls.AddNewDocument(SessionId, BatchId, FileName, Bytes).then(result => {
-                                    const DocumentId = result;
-                                    abbyycalls.ProcessBatch(SessionId, BatchId)
-                                    abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, FileName).then(result => {
-                                        dboperations.UpdateEnquiry(ObjectID, result, SessionId, BatchId);
-                                        res.end(result);
-                                    })
-                                })
-                            })
+                        (async()=>{
+                            let OpenSession = await abbyycalls.OpenSession();
+                            SessionId = OpenSession;
+                            console.log(SessionId);
+                        })();
+                        (async()=>{
+                            let AddNewBatch = await abbyycalls.AddNewBatch(SessionId, BatchName);
+                            BatchId  = AddNewBatch;
+                            console.log(AddNewBatch);
+                        })();
+                        (async()=>{
+                            let OpenBatch = await abbyycalls.OpenBatch(SessionId, BatchId);
+                            console.log(OpenBatch);
+                        })();
+                        (async()=>{
+                            let AddNewDocument = await abbyycalls.AddNewDocument(SessionId, BatchId, FileName, Bytes);
+                            DocumentId = AddNewDocument;
+                            console.log(AddNewDocument);
+                        })();
+                        (async()=>{
+                            let ProcessBatch = await abbyycalls.ProcessBatch(SessionId, BatchId);
+                            console.log(ProcessBatch);
+                        })();
+                        (async()=>{
+                            let LoadDocumentResult = await abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, FileName);
+                            DocumentResult = LoadDocumentResult;
+                            console.log(LoadDocumentResult);
+                        })();
+                        dboperations.UpdateEnquiry(ObjectID, result, SessionId, BatchId).then( result => {
+                            result.end(result);
                         })
                     }
                 })
             } else {
-                dboperations.addEnquiry(ObjectID, ReceivedObject, QuoteType).then(
-                    abbyycalls.OpenSession().then(result => {
-                        const SessionId = result;
-                        abbyycalls.AddNewBatch(SessionId, BatchName).then(result => {
-                            const BatchId = result;
-                            abbyycalls.OpenBatch(SessionId, BatchId)
-                            abbyycalls.AddNewDocument(SessionId, BatchId, FileName, Bytes).then(result => {
-                                const DocumentId = result;
-                                abbyycalls.ProcessBatch(SessionId, BatchId)
-                                abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, FileName).then(result => {
-                                    dboperations.UpdateEnquiry(ObjectID, result, SessionId, BatchId);
-                                    res.end(result);
-                                })
-                            })
-                        })
-                    })
-                )
+                dboperations.addEnquiry(ObjectID, ReceivedObject, QuoteType);
+                (async()=>{
+                    let OpenSession = await abbyycalls.OpenSession();
+                    SessionId = OpenSession;
+                    console.log(SessionId);
+                })();
+                (async()=>{
+                    let AddNewBatch = await abbyycalls.AddNewBatch(SessionId, BatchName);
+                    BatchId  = AddNewBatch;
+                    console.log(AddNewBatch);
+                })();
+                (async()=>{
+                    let OpenBatch = await abbyycalls.OpenBatch(SessionId, BatchId);
+                    console.log(OpenBatch);
+                })();
+                (async()=>{
+                    let AddNewDocument = await abbyycalls.AddNewDocument(SessionId, BatchId, FileName, Bytes);
+                    DocumentId = AddNewDocument;
+                    console.log(AddNewDocument);
+                })();
+                (async()=>{
+                    let ProcessBatch = await abbyycalls.ProcessBatch(SessionId, BatchId);
+                    console.log(ProcessBatch);
+                })();
+                (async()=>{
+                    let LoadDocumentResult = await abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, FileName);
+                    DocumentResult = LoadDocumentResult;
+                    console.log(LoadDocumentResult);
+                })();
+                dboperations.UpdateEnquiry(ObjectID, result, SessionId, BatchId).then( result => {
+                    result.end(result);
+                })
             }
         })
     })
