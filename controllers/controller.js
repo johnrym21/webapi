@@ -74,7 +74,7 @@ module.exports = function (app) {
                                             }
                                             LoadDocumentResult()
                                             .then(data => {
-                                                console.log(data);
+                                                console.log(data.Name);
                                                 dboperations.UpdateEnquiry(ObjectID, data, SessionId, BatchId).then(
                                                     dboperations.checkIfDestinationExists(ObjectID).then(result => {
                                                         console.log(result)
