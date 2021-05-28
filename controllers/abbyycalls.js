@@ -21,6 +21,7 @@ async function OpenSession(){
         }
     catch (err){
         console.log(err);
+        console.log("open session");
     }
 }
 
@@ -94,6 +95,7 @@ async function AddNewBatch(SessionId, BatchName){
         }
     catch (err){
         console.log(err);
+        console.log("addnewbatch");
     }
 }
 
@@ -115,6 +117,7 @@ async function OpenBatch(SessionId, BatchId){
         }
     catch (err){
         console.log(err);
+        console.log("OpenBatch");
     }
 }
 
@@ -166,6 +169,7 @@ async function ProcessBatch(SessionId, BatchId){
         }
     catch (err){
         console.log(err);
+        console.log("processbatch");
     }
 }
 
@@ -215,6 +219,7 @@ async function LoadDocumentResult(){
         }
     catch (err){
         console.log(err);
+        console.log("LoadDocumentresult");
     }
 }
 
@@ -297,6 +302,7 @@ async function AddNewDocument(SessionId, BatchId, FileName, Bytes){
         }
     catch (err){
         console.log(err);
+        console.log("Addnewdocument");
     }
 }
 
