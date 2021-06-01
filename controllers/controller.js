@@ -14,10 +14,12 @@ module.exports = function (app) {
 
         const ReceivedObject = JSON.stringify(req.body, null, 2);
         const ObjectID = req.body.quoteId;
+        const fileName = req.body.file.Name;
+        const bytes = req.body.file.Bytes;
         const QuoteType = ''; //check with rania how to determin the type of the quote
         const BatchName = 'batch test 3';
-        const FileName = 'image.jpg';
-        const Bytes = "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111101111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111100001111111111111111111111111111111111000000011111111111111111111111111111111100111101111111111111111111111111111111110001000111111111111111111110111111111111000000011111111111111111111111111111111100000001111111111111111111111111111111110000010111111111111111111111111111111111100000011111111111111111111111111111111110000001111111111111111111111111111111111000000111111111111111111111111111111111000000100111111111111111111111111111110000000110011111111111111111111111111111000010111001111111111111100000010111111111111111111111111111110100000001101111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+        //const FileName = 'image.jpg';
+        //const Bytes = "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111101111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111100001111111111111111111111111111111111000000011111111111111111111111111111111100111101111111111111111111111111111111110001000111111111111111111110111111111111000000011111111111111111111111111111111100000001111111111111111111111111111111110000010111111111111111111111111111111111100000011111111111111111111111111111111110000001111111111111111111111111111111111000000111111111111111111111111111111111000000100111111111111111111111111111110000000110011111111111111111111111111111000010111001111111111111100000010111111111111111111111111111110100000001101111111111111111111111111111111111111111111111111111111111111111111111111111111111";
         
         dboperations.checkIfIdExists(ObjectID).then(result => {
             if (result != null) {
@@ -53,7 +55,7 @@ module.exports = function (app) {
                                 .then(data => {
                                     console.log("open batch true");
                                     const AddNewDocument = async()=>{
-                                        let AddNewDocument = await abbyycalls.AddNewDocument(SessionId);
+                                        let AddNewDocument = await abbyycalls.AddNewDocument(SessionId, BatchId, fileName, bytes);
                                         let data  = await AddNewDocument.documentId;
                                         return data;
                                     };
@@ -62,13 +64,13 @@ module.exports = function (app) {
                                         const DocumentId = data;
                                         console.log(DocumentId);
                                         const ProcessBatch = async()=>{
-                                            let ProcessBatch = await abbyycalls.ProcessBatch(SessionId);
+                                            let ProcessBatch = await abbyycalls.ProcessBatch(SessionId, BatchId);
                                         };
                                         ProcessBatch()
                                         .then(data => {
                                             console.log("batch processed");
                                             const LoadDocumentResult = async()=>{
-                                                let LoadDocumentResult = await abbyycalls.LoadDocumentResult(SessionId);
+                                                let LoadDocumentResult = await abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName);
                                                 let data = LoadDocumentResult.file;
                                                 return data;
                                             }

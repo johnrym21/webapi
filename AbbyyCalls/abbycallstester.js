@@ -276,10 +276,10 @@ async function AddNewDocument(){
             {
                 "MethodName":"AddNewDocument",
                 "Params": {
-                        "sessionId" : 17502,
+                        "sessionId" : 17693,
                         "document": {
-                                "Id": 1,
-                                "BatchId": 64,
+                                "Id": 4,
+                                "BatchId": 57,
                                 "ParentId": 0,
                                 "DocIndex": 0,
                                 "TemplateName": "",

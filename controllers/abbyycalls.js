@@ -199,16 +199,16 @@ async function GetDocuments(){
     }
 }
 
-async function LoadDocumentResult(){
+async function LoadDocumentResult(SessionId, BatchId, DocumentId, fileName){
     try{
         const response = await axios.post(url,
             {
                 "MethodName":"LoadDocumentResult",
                 "Params": {
-                    "sessionId" : 16822,
-                    "batchId" : 33,
-                    "documentId" : 1,
-                    "fileName" : "",
+                    "sessionId" : SessionId,
+                    "batchId" : BatchId,
+                    "documentId" : DocumentId,
+                    "fileName" : fileName,
                     }
             }, {
             headers: { 
@@ -249,7 +249,7 @@ async function CloseBatch(){
     }
 }
 
-async function AddNewDocument(SessionId, BatchId, FileName, Bytes){
+async function AddNewDocument(SessionId, BatchId, fileName, bytes){
     try{
         const response = await axios.post(url,
             {
@@ -287,8 +287,8 @@ async function AddNewDocument(SessionId, BatchId, FileName, Bytes){
                                 "ChildrenOrder": []
                             },
                         "file" : {
-                            "Name" : FileName,
-                            "Bytes" : Bytes
+                            "Name" : fileName,
+                            "Bytes" : bytes
                             },
                             "excludeFromAutomaticAssembling" : false,
                             "previousItemId" : 0
