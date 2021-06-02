@@ -55,26 +55,32 @@ module.exports = function (app) {
                                                 )
                                             })
                                             .catch(function (error) {
+                                                res.end(error);
                                                 console.log(error);
                                             });
                                         })
                                         .catch(function (error) {
+                                            res.end(error);
                                             console.log(error);
                                         });
                                     })
                                     .catch(function (error) {
+                                        res.end(error);
                                         console.log(error);
                                     });
                                 })
                                 .catch(function (error) {
+                                    res.end(error);
                                     console.log(error);
                                 });
                             })
                             .catch(function (error) {
+                                res.end(error);
                                 console.log(error);
                             });
                         })
                         .catch(function (error) {
+                            res.end(error);
                             console.log(error);
                         });
                     }
@@ -110,26 +116,32 @@ module.exports = function (app) {
                                         )
                                     })
                                     .catch(function (error) {
+                                        res.end(error);
                                         console.log(error);
                                     });
                                 })
                                 .catch(function (error) {
+                                    res.end(error);
                                     console.log(error);
                                 });
                             })
                             .catch(function (error) {
+                                res.end(error);
                                 console.log(error);
                             });
                         })
                         .catch(function (error) {
+                            res.end(error);
                             console.log(error);
                         });
                     })
                     .catch(function (error) {
+                        res.end(error);
                         console.log(error);
                     });
                 })
                 .catch(function (error) {
+                    res.end(error);
                     console.log(error);
                 });
             }
