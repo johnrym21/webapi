@@ -13,15 +13,15 @@ module.exports = function (app) {
         }
 
         const ReceivedObject = JSON.stringify(req.body, null, 2);
-        const ObjectID = req.body.quoteId;
+        const quoteId = req.body.quoteId;
         const fileName = req.body.file.Name;
         const bytes = req.body.file.Bytes;
         const QuoteType = ''; //check with rania how to determin the type of the quote
         const BatchName = 'batch test 3';
         
-        dboperations.checkIfIdExists(ObjectID).then(result => {
+        dboperations.checkIfIdExists(quoteId).then(result => {
             if (result != null) {
-                dboperations.checkIfDestinationExists(ObjectID).then(result => {
+                dboperations.checkIfDestinationExists(quoteId).then(result => {
                     if (result != null) {
                         console.log(result)
                         res.end(result)
@@ -47,8 +47,8 @@ module.exports = function (app) {
                                             abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName)
                                             .then(data => {
                                                 console.log(data.file.Name);
-                                                dboperations.UpdateEnquiry(ObjectID, data.file, SessionId, BatchId).then(
-                                                    dboperations.checkIfDestinationExists(ObjectID).then(result => {
+                                                dboperations.UpdateEnquiry(quoteId, data.file, SessionId, BatchId).then(
+                                                    dboperations.checkIfDestinationExists(quoteId).then(result => {
                                                         console.log(result)
                                                         res.end(result)
                                                     })
@@ -86,7 +86,7 @@ module.exports = function (app) {
                     }
                 })
             } else {
-                dboperations.addEnquiry(ObjectID, ReceivedObject, QuoteType);
+                dboperations.addEnquiry(quoteId, ReceivedObject, QuoteType);
                 abbyycalls.OpenSession()
                 .then(data => {
                     const SessionId = data.sessionId;
@@ -108,8 +108,8 @@ module.exports = function (app) {
                                     abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName)
                                     .then(data => {
                                         console.log(data.file.Name);
-                                        dboperations.UpdateEnquiry(ObjectID, data.file, SessionId, BatchId).then(
-                                            dboperations.checkIfDestinationExists(ObjectID).then(result => {
+                                        dboperations.UpdateEnquiry(quoteId, data.file, SessionId, BatchId).then(
+                                            dboperations.checkIfDestinationExists(quoteId).then(result => {
                                                 console.log(result)
                                                 res.end(result)
                                             })
