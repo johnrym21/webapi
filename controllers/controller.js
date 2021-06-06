@@ -189,7 +189,7 @@ module.exports = function (app) {
 
                 fs.mkdirSync('../import/' + dir, { recursive: true});
 
-                fs.writeFileSync('../import/' + dir + '/' + fileName+'.jpg', base64String, {encoding: 'base64'});
+                fs.writeFileSync('../import/' + dir + '/' + fileName+'.jpg', bytes, {encoding: 'base64'});
 
                 const returnJson = fs.readFileSync('../export/' + fileName+'.json', {encoding: 'base64'});
 
