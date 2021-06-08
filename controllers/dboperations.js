@@ -22,7 +22,35 @@ async function checkIfDestinationExists(OjectID){
         let result = await pool.request()
             .input('Enquiry_ID', sql.NVarChar, OjectID)
             .output('returnObject', sql.NVarChar)
-            .execute('Destination')
+            .execute('GetEnqDestination')
+        return result.output.returnObject
+    }
+    catch (err){
+        console.log(error);
+    }
+}
+
+async function GetEnqSessionID(OjectID){
+    try {
+        let pool = await sql.connect(db)
+        let result = await pool.request()
+            .input('Enquiry_ID', sql.NVarChar, OjectID)
+            .output('returnObject', sql.NVarChar)
+            .execute('GetEnqSessionID')
+        return result.output.returnObject
+    }
+    catch (err){
+        console.log(error);
+    }
+}
+
+async function GetEnqBatchID(OjectID){
+    try {
+        let pool = await sql.connect(db)
+        let result = await pool.request()
+            .input('Enquiry_ID', sql.NVarChar, OjectID)
+            .output('returnObject', sql.NVarChar)
+            .execute('GetEnqBatchID')
         return result.output.returnObject
     }
     catch (err){
@@ -82,4 +110,6 @@ module.exports = {
     checkIfIdExists : checkIfIdExists,
     UpdateEnquiry : UpdateEnquiry,
     checkIfDestinationExists : checkIfDestinationExists,
+    GetEnqSessionID : GetEnqSessionID,
+    GetEnqBatchID : GetEnqBatchID
 }
