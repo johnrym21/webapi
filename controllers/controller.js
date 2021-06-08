@@ -14,11 +14,13 @@ module.exports = function (app) {
         }
 
         const ReceivedObject = JSON.stringify(req.body, null, 2);
-        const quoteId = req.body.quoteId;
-        const fileName = req.body.file.Name;
+        const quoteId = req.body.requestId;
+        const sourceName = req.body.file.Name;
+        const ext = req.body.file.Ext;
         const bytes = req.body.file.Bytes;
-        const QuoteType = req.body.quoteType;
-        const BatchName = quoteId + fileName;
+        const QuoteType = req.body.Type;
+        const BatchName = QuoteType + quoteId + sourceName;
+        const fileName = QuoteType + quoteId + sourceName + ext;
         
         dboperations.checkIfIdExists(quoteId).then(result => {
             if (result != null) {
@@ -35,6 +37,7 @@ module.exports = function (app) {
                             .then(data =>{
                                 const BatchId = data.batchId;
                                 console.log(BatchId);
+                                dboperations.UpdateEnquiry(quoteId, null, SessionId, BatchId);
                                 abbyycalls.OpenBatch(SessionId, BatchId)
                                 .then(data => {
                                     console.log(data.result);
@@ -56,6 +59,8 @@ module.exports = function (app) {
                                                     abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName)
                                                     .then( data => {
                                                         console.log(data.file.Name);
+                                                        const returnObject = data.file.bytes;
+                                                        dboperations.UpdateEnquiry(quoteId, returnObject, SessionId, BatchId);
                                                         res.end(data);
                                                     })
                                                     .catch(function (error) {
@@ -109,6 +114,7 @@ module.exports = function (app) {
                     .then(data =>{
                         const BatchId = data.batchId;
                         console.log(BatchId);
+                        dboperations.UpdateEnquiry(quoteId, null, SessionId, BatchId);
                         abbyycalls.OpenBatch(SessionId, BatchId)
                         .then(data => {
                             console.log(data.result);
@@ -130,6 +136,8 @@ module.exports = function (app) {
                                             abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName)
                                             .then( data => {
                                                 console.log(data.file.Name);
+                                                const returnObject = data.file.bytes;
+                                                dboperations.UpdateEnquiry(quoteId, returnObject, SessionId, BatchId);
                                                 res.end(data);
                                             })
                                             .catch(function (error) {
