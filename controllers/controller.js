@@ -17,8 +17,8 @@ module.exports = function (app) {
         const quoteId = req.body.quoteId;
         const fileName = req.body.file.Name;
         const bytes = req.body.file.Bytes;
-        const QuoteType = ''; //check with rania how to determin the type of the quote
-        const BatchName = 'batch test 3';
+        const QuoteType = req.body.quoteType;
+        const BatchName = quoteId + fileName;
         
         dboperations.checkIfIdExists(quoteId).then(result => {
             if (result != null) {
@@ -45,15 +45,28 @@ module.exports = function (app) {
                                         abbyycalls.ProcessBatch(SessionId, BatchId)
                                         .then(data => {
                                             console.log("batch processed");
-                                            abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName)
+                                            abbyycalls.CloseBatch(SessionId, BatchId)
                                             .then(data => {
-                                                console.log(data.file.Name);
-                                                dboperations.UpdateEnquiry(quoteId, data.file, SessionId, BatchId).then(
-                                                    dboperations.checkIfDestinationExists(quoteId).then(result => {
-                                                        console.log(result)
-                                                        res.end(result)
+                                                console.log("batch closed");
+                                                abbyycalls.GetDocumentResultsList(SessionId, BatchId, DocumentId)
+                                                .then( data => {
+                                                    console.log(data);
+                                                    console.log("here");
+                                                    const DocumentResult = data;
+                                                    abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName)
+                                                    .then( data => {
+                                                        console.log(data.file.Name);
+                                                        res.end(data);
                                                     })
-                                                )
+                                                    .catch(function (error) {
+                                                        res.end(error);
+                                                        console.log(error);
+                                                    });
+                                                })
+                                                .catch(function (error) {
+                                                    res.end(error);
+                                                    console.log(error);
+                                                });
                                             })
                                             .catch(function (error) {
                                                 res.end(error);
@@ -106,15 +119,28 @@ module.exports = function (app) {
                                 abbyycalls.ProcessBatch(SessionId, BatchId)
                                 .then(data => {
                                     console.log("batch processed");
-                                    abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName)
+                                    abbyycalls.CloseBatch(SessionId, BatchId)
                                     .then(data => {
-                                        console.log(data.file.Name);
-                                        dboperations.UpdateEnquiry(quoteId, data.file, SessionId, BatchId).then(
-                                            dboperations.checkIfDestinationExists(quoteId).then(result => {
-                                                console.log(result)
-                                                res.end(result)
+                                        console.log("batch closed");
+                                        abbyycalls.GetDocumentResultsList(SessionId, BatchId, DocumentId)
+                                        .then( data => {
+                                            console.log(data);
+                                            console.log("here");
+                                            const DocumentResult = data;
+                                            abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName)
+                                            .then( data => {
+                                                console.log(data.file.Name);
+                                                res.end(data);
                                             })
-                                        )
+                                            .catch(function (error) {
+                                                res.end(error);
+                                                console.log(error);
+                                            });
+                                        })
+                                        .catch(function (error) {
+                                            res.end(error);
+                                            console.log(error);
+                                        });
                                     })
                                     .catch(function (error) {
                                         res.end(error);
@@ -160,8 +186,8 @@ module.exports = function (app) {
         const quoteId = req.body.quoteId;
         const fileName = req.body.file.Name;
         const bytes = req.body.file.Bytes;
-        const QuoteType = ''; //check with rania how to determin the type of the quote
-        const BatchName = 'batch test 3';
+        const QuoteType = req.body.quoteType;
+        const BatchName = quoteId + fileName;
         const dir = 'cora-' + quoteId + '-' + fileName;
         const SessionId = 123;
         const BatchId = 123;

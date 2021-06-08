@@ -108,7 +108,7 @@ async function AddNewDocument(SessionId, BatchId, fileName, bytes){
                 "Params": {
                         "sessionId" : SessionId,
                         "document": {
-                                "Id": 1,
+                                "Id": -1,
                                 "BatchId": BatchId,
                                 "ParentId": 0,
                                 "DocIndex": 0,
@@ -203,7 +203,58 @@ async function LoadDocumentResult(SessionId, BatchId, DocumentId, fileName){
     }
 }
 
+async function CloseBatch(SessionId, BatchId){
+    try{
+        const resp = await axios.post(url,
+            {
+                "MethodName":"CloseBatch",
+                "Params": {
+                    "sessionId" : SessionId,
+                    "batchId" : BatchId
+                }
+            }, {
+            headers: { 
+              'Authorization' : 'Basic ' + 'ZmlkZWxpdHlob1xhYmJ5eWFwaXVzcjpAYmIxMTVSdg==',
+              'Content-Type' : 'application/json' }
+            })
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+    catch (err){
+        console.log(err);
+    }
+}
 
+async function GetDocumentResultsList(SessionId, BatchId, DocumentId){
+    try{
+        const resp = await axios.post(url,
+            {
+                "MethodName":"GetDocumentResultsList",
+                "Params": {
+                        "sessionId" : SessionId,
+                        "batchId": BatchId,
+                        "documentId" : DocumentId
+                    }
+            }, {
+            headers: { 
+              'Authorization' : 'Basic ' + 'ZmlkZWxpdHlob1xhYmJ5eWFwaXVzcjpAYmIxMTVSdg==',
+              'Content-Type' : 'application/json' }
+            })
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+    catch (err){
+        console.log(err);
+    }
+}
 
 module.exports = {
     OpenSession : OpenSession,
@@ -211,5 +262,7 @@ module.exports = {
     OpenBatch : OpenBatch,
     AddNewDocument : AddNewDocument,
     ProcessBatch : ProcessBatch,
-    LoadDocumentResult : LoadDocumentResult
+    LoadDocumentResult : LoadDocumentResult,
+    CloseBatch : CloseBatch,
+    GetDocumentResultsList : GetDocumentResultsList
 }
