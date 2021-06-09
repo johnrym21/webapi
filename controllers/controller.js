@@ -51,27 +51,34 @@ module.exports = function (app) {
                                             abbyycalls.CloseBatch(SessionId, BatchId)
                                             .then(data => {
                                                 console.log("batch closed");
-                                                abbyycalls.GetDocumentResultsList(SessionId, BatchId, DocumentId)
-                                                .then( data => {
-                                                    console.log(data);
-                                                    console.log("here");
-                                                    const DocumentResult = data;
-                                                    abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName)
-                                                    .then( data => {
-                                                        console.log(data.file.Name);
-                                                        const returnObject = data.file.bytes;
-                                                        dboperations.UpdateEnquiry(quoteId, returnObject, SessionId, BatchId);
-                                                        res.end(data);
-                                                    })
-                                                    .catch(function (error) {
-                                                        res.end(error);
-                                                        console.log(error);
-                                                    });
-                                                })
-                                                .catch(function (error) {
-                                                    res.end(error);
-                                                    console.log(error);
-                                                });
+                                                for(let x = 1; x < 6; x++){
+                                                    setTimeout(() => {
+                                                        abbyycalls.GetDocumentResultsList(SessionId, BatchId, DocumentId)
+                                                        .then( data => {
+                                                            console.log(data.fileNames);
+                                                            console.log("here");
+                                                            if(data.fileNames == null){
+                                                                continue;
+                                                            }
+                                                            const DocumentResult = data.fileNames;
+                                                            abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, DocumentResult)
+                                                            .then( data => {
+                                                                console.log(data.file.Name);
+                                                                const returnObject = data.file.bytes;
+                                                                dboperations.UpdateEnquiry(quoteId, returnObject, SessionId, BatchId);
+                                                                res.end(data);
+                                                            })
+                                                            .catch(function (error) {
+                                                                res.end(error);
+                                                                console.log(error);
+                                                            });
+                                                        })
+                                                        .catch(function (error) {
+                                                            res.end(error);
+                                                            console.log(error);
+                                                        });
+                                                    }, 20000);
+                                                }
                                             })
                                             .catch(function (error) {
                                                 res.end(error);
@@ -128,27 +135,34 @@ module.exports = function (app) {
                                     abbyycalls.CloseBatch(SessionId, BatchId)
                                     .then(data => {
                                         console.log("batch closed");
-                                        abbyycalls.GetDocumentResultsList(SessionId, BatchId, DocumentId)
-                                        .then( data => {
-                                            console.log(data);
-                                            console.log("here");
-                                            const DocumentResult = data;
-                                            abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, fileName)
-                                            .then( data => {
-                                                console.log(data.file.Name);
-                                                const returnObject = data.file.bytes;
-                                                dboperations.UpdateEnquiry(quoteId, returnObject, SessionId, BatchId);
-                                                res.end(data);
-                                            })
-                                            .catch(function (error) {
-                                                res.end(error);
-                                                console.log(error);
-                                            });
-                                        })
-                                        .catch(function (error) {
-                                            res.end(error);
-                                            console.log(error);
-                                        });
+                                        for(let x = 1; x < 6; x++){
+                                            setTimeout(() => {
+                                                abbyycalls.GetDocumentResultsList(SessionId, BatchId, DocumentId)
+                                                .then( data => {
+                                                    console.log(data.fileNames);
+                                                    console.log("here");
+                                                    if(data.fileNames == null){
+                                                        continue;
+                                                    }
+                                                    const DocumentResult = data.fileNames;
+                                                    abbyycalls.LoadDocumentResult(SessionId, BatchId, DocumentId, DocumentResult)
+                                                    .then( data => {
+                                                        console.log(data.file.Name);
+                                                        const returnObject = data.file.bytes;
+                                                        dboperations.UpdateEnquiry(quoteId, returnObject, SessionId, BatchId);
+                                                        res.end(data);
+                                                    })
+                                                    .catch(function (error) {
+                                                        res.end(error);
+                                                        console.log(error);
+                                                    });
+                                                })
+                                                .catch(function (error) {
+                                                    res.end(error);
+                                                    console.log(error);
+                                                });
+                                            }, 20000);
+                                        }
                                     })
                                     .catch(function (error) {
                                         res.end(error);
