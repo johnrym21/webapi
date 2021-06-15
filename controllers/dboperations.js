@@ -86,7 +86,7 @@ async function addEnquiry(Enquiry_ID, Enquiry_Json, Enquiry_Type) {
     }
 }
 
-async function UpdateEnquiry(Enquiry_ID, DestinationJson, Session_ID, Batch_ID) {
+async function UpdateEnquiry(Enquiry_ID, DestinationJson, Session_ID, Batch_ID, fileName) {
     try {
         let pool = await sql.connect(db);
         let updateData = await pool.request()   
@@ -94,6 +94,7 @@ async function UpdateEnquiry(Enquiry_ID, DestinationJson, Session_ID, Batch_ID) 
             .input('DestinationJson', sql.NVarChar, DestinationJson)
             .input('Session_ID', sql.NVarChar, Session_ID)
             .input('Batch_ID', sql.NVarChar, Batch_ID)
+            .input('FileName',sql.NVarChar, fileName)
             .execute('updateEnquiry')
         return updateData.recordsets;
     } 
