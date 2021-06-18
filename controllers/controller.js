@@ -216,7 +216,7 @@ module.exports = function (app) {
     })
 
 
-    app.post('/GetOCRDocument', (req, res) => {
+    app.get('/GetOCRDocument', (req, res) => {
 
         if (req.query.token !== token) {
             return res.sendStatus(401);
