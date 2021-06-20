@@ -103,6 +103,19 @@ async function UpdateEnquiry(Enquiry_ID, DestinationJson, Session_ID, Batch_ID, 
     }
 }
 
+async function GetOCRFileName(Enquiry_ID) {
+    try {
+        let pool = await sql.connect(db);
+        let updateData = await pool.request()   
+            .input('Enquiry_ID', sql.NVarChar, Enquiry_ID)
+            .execute('GetEnqDestination')
+        return updateData.output.returnObject;
+    } 
+    catch (err) {
+        console.log(error);
+    }
+}
+
 
 
 module.exports = {
@@ -112,5 +125,6 @@ module.exports = {
     UpdateEnquiry : UpdateEnquiry,
     checkIfDestinationExists : checkIfDestinationExists,
     GetEnqSessionID : GetEnqSessionID,
-    GetEnqBatchID : GetEnqBatchID
+    GetEnqBatchID : GetEnqBatchID,
+    GetOCRFileName : GetOCRFileName
 }

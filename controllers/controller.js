@@ -226,57 +226,74 @@ module.exports = function (app) {
         const quoteId = req.body.requestId;
         const DocumentId = 1;
 
-        dboperations.checkIfDestinationExists(quoteId).then( result => {
+        dboperations.checkIfDestinationExists(quoteId).then(result => {
             if (result != null) {
                 res.json(result);
             } else {
-                dboperations.GetEnqBatchID(quoteId).then( result => {
-                    const BatchId = result;
-                    abbyycalls.OpenSession().then( data => {
-                        const SessionId = data.sessionId;
-                        const interval = function (i) {
-                            console.log(i);
-                            return function () {
-                                if (i === 6) {
+                dboperations.GetOCRFileName(quoteId).then(result => {
+                    if (result == null) {
+                        dboperations.GetEnqBatchID(quoteId).then(result => {
+                            const BatchId = result;
+                            abbyycalls.OpenSession().then(data => {
+                                const SessionId = data.sessionId;
+                                const interval = function (i) {
+                                    console.log(i);
+                                    return function () {
+                                        if (i === 6) {
+                                            res.json({ "status": "failed", "status description": "failed to OCR" });
+                                        }
+                                        else {
+                                            abbyycalls.GetDocument(SessionId, BatchId, DocumentId)
+                                                .then(data => {
+                                                    console.log(data);
+                                                    const ftpFileName = data;
+                                                    if (typeof (ftpFileName) != 'undefined') {
+                                                        ftp.ftpin(ftpFileName)
+                                                            .then(data => {
+                                                                if (data == true) {
+                                                                    const returnObject = require("../export/" + ftpFileName + ".json");
+                                                                    const DataBaseJson = JSON.stringify(returnObject, null, 2);
+                                                                    dboperations.UpdateEnquiry(quoteId, DataBaseJson, SessionId, BatchId, ftpFileName);
+                                                                    res.json(returnObject);
+                                                                } else {
+                                                                    setTimeout(interval(++i), 20000);
+                                                                }
+                                                            })
+                                                            .catch(function (error) {
+                                                                console.log(error);
+                                                            });
+                                                    } else {
+                                                        setTimeout(interval(++i), 20000);
+                                                    }
+                                                })
+                                                .catch(function (error) {
+                                                    res.end(error);
+                                                    console.log(error);
+                                                });
+                                        }
+                                    }
+                                }
+                                setTimeout(interval(0), 20000)
+                            })
+                                .catch(function (error) {
+                                    res.end(error);
+                                    console.log(error);
+                                });
+                        })
+                    } else {
+                        const ftpFileName = result;
+                        ftp.ftpin(ftpFileName)
+                            .then(data => {
+                                if (data == true) {
+                                    const returnObject = require("../export/" + ftpFileName + ".json");
+                                    const DataBaseJson = JSON.stringify(returnObject, null, 2);
+                                    dboperations.UpdateEnquiry(quoteId, DataBaseJson, SessionId, BatchId, ftpFileName);
+                                    res.json(returnObject);
+                                } else {
                                     res.json({ "status": "failed", "status description": "failed to OCR" });
                                 }
-                                else {
-                                    abbyycalls.GetDocument(SessionId, BatchId, DocumentId)
-                                        .then(data => {
-                                            console.log(data);
-                                            const ftpFileName = data;
-                                            if (typeof (ftpFileName) != 'undefined') {
-                                                ftp.ftpin(ftpFileName)
-                                                    .then(data => {
-                                                        if (data == true) {
-                                                            const returnObject = require("../export/" + ftpFileName + ".json");
-                                                            const DataBaseJson = JSON.stringify(returnObject, null, 2);
-                                                            dboperations.UpdateEnquiry(quoteId, DataBaseJson, SessionId, BatchId, ftpFileName);
-                                                            res.json(returnObject);
-                                                        } else {
-                                                            setTimeout(interval(++i), 20000);
-                                                        }
-                                                    })
-                                                    .catch(function (error) {
-                                                        console.log(error);
-                                                    });
-                                            } else {
-                                                setTimeout(interval(++i), 20000);
-                                            }
-                                        })
-                                        .catch(function (error) {
-                                            res.end(error);
-                                            console.log(error);
-                                        });
-                                }
-                            }
-                        }
-                        setTimeout(interval(0), 20000)
-                    })
-                    .catch(function (error) {
-                        res.end(error);
-                        console.log(error);
-                    });
+                            })
+                    }
                 })
             }
         })
